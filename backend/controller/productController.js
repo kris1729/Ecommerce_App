@@ -1,3 +1,45 @@
-exports.getAllProduct =(req , res)=>{
-   res.status(200).json({message:"route is working fine"})
+const Product = require("../models/productModel");
+
+// create product--Admin
+
+exports.createProduct = async (req,res,next)=>{
+  const product = await Product.create(req.body);
+   res.status(201).json({
+      success:true,
+     product,
+    
+   }) 
+}
+
+// get all product 
+exports.getAllProduct = async (req , res)=>{
+   const products =  await Product.find();
+   res.status(200).json({
+      success:true,
+      products,
+
+   })
+}
+
+// Upadate Product by id ---Admin
+
+exports.upadateProduct = async(req,res,next)=>{
+   let product = await Product.findById(req.params.id);
+   if(!product){
+      res.status(500).json({
+         success:false,
+         massege:"product is not found",
+      })
+   }
+   
+   product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+  
+    res.status(200).json({
+      success: true,
+      product,
+    });
 }
