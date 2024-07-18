@@ -8,8 +8,9 @@ app.use(express.json());
 
 const product = require("./routes/productRoute");
 const middleware = require("./middleware/error");
-
+const users = require("./routes/userRoute");
 app.use("/api/v1",product);
+app.use("/api/v1",users)
 app.use(middleware);
 
 
